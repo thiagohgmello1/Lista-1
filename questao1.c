@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include <math.h>
+#include <string.h>
 
 #define m_type float
 
@@ -16,8 +17,20 @@ int main(void){
     srand(time(NULL));
     int row1, row2, column1, column2;
     bool status;
-    char rand_init;
+    char rand_init[1];
 
+    init: printf("Deseja iniciar as matrizes aleatoriamente? [S/N] ");
+    scanf("%s", &rand_init);
+            if(strcmpi(rand_init, "S") == 0){
+            printf("SIM \n");
+        } else if(strcmpi(rand_init, "N") == 0){
+            printf("NAO \n");
+        } else{
+            printf("Resposta invalida. \n");
+            goto init;
+        }
+
+    printf("%s %d \n", rand_init, strcmp(rand_init, "N"));
     printf("Digite o numero de linhas da primeira matriz (matriz A em A*B): ");
     scanf("%d", &row1);
     printf("Digite o numero de colunas da primeira matriz (matriz A em A*B): ");
@@ -26,8 +39,6 @@ int main(void){
     scanf("%d", &row2);
     printf("Digite o numero de colunas da segunda matriz (matriz B em A*B): ");
     scanf("%d", &column2);
-    printf("Deseja iniciar as matrizes aleatoriamente? [S/N]");
-    scanf("%c", &rand_init);
     
     status = equal_status(column1, row2);
     if (status == true){
@@ -70,7 +81,7 @@ m_type **matrix_init(int row, int column){
     for (int i = 1; i < row; i++){
         for (int j = 0; j < column; j++){
             aux = log(rand());
-            printf("%f \n", aux);
+            // printf("%f \n", aux);
             M[i][j] = aux;
             // M[i][j] = j + 1;
         }
