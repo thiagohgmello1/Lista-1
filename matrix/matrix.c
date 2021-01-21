@@ -43,35 +43,17 @@ bool EqualStatus(int len1, int len2){
 ** ===================================================================
 */
 m_type **MatrixInit(int row, int column){
-    m_type aux = 0;
     row += 1;
-    m_type **M = (float **)malloc(row * sizeof(m_type*));
-    m_type **Mindex = (float **)malloc((row - 1) * sizeof(m_type*));
+    m_type **M = (m_type **)malloc(row * sizeof(m_type*));
     
-    for (int i = 0; i < row; i++)
-    {
-        M[i] = (float *)malloc((column) * sizeof(m_type));
-        Mindex[i] = (float *)malloc((column) * sizeof(m_type));
+    
+    for (int i = 0; i < row; i++){
+        M[i] = (m_type *)malloc((column) * sizeof(m_type));
     }
     
     M[0][0] = row;
     M[0][1] = column;
 
-    Mindex[0][0] = row;
-    Mindex[0][1] = column;
-
-    // Random initialization
-    for (int i = 1; i < row; i++){
-        for (int j = 0; j < column; j++){
-            aux = (m_type)(rand() % NUM_SIZE);
-            Mindex[i][j] = aux;
-            printf("%.0f \n", Mindex[i][j]);
-            M[i][j] = log10(pow(M_PI, aux));
-            // M[i][j] = j + 1;
-        }
-    }
-    SaveMatrix(Mindex, "Entradas.txt");
-    SaveMatrix(M, "Matrizes.txt");
     return M;
 }
 
@@ -88,11 +70,10 @@ m_type **MatrixInit(int row, int column){
 m_type **MatrixMult(m_type **mt1, m_type **mt2){
     int row1 = mt1[0][0];
     int column1 = mt1[0][1];
-    // int row2 = mt2[0][0];
     int column2 = mt2[0][1];
     int i, j, k;
     m_type **M = MatrixInit(row1 - 1, column2);
-    float aux = 0;
+    m_type aux = 0;
 
     for(i = 1; i < row1; i++){
         for(j = 0; j < column2; j++){
@@ -141,10 +122,17 @@ bool SaveMatrix(m_type **M, char *name){
     int column = M[0][1];
 
     fp = fopen(name, "a");
+    if(fp == NULL) {
+        return false;
+    }
+
+    fprintf(fp, "row: %d \ncolumn: %d\n", (row - 1), column);
     for(int i = 1; i < row; i++){
         for(int j = 0; j < column; j++){
-            // fprintf(fp, "M[%d][%d] = %f \n", (i - 1), j, M[i][j]);
-            fprintf(fp, "%f \n", M[i][j]);
+            if(strcmpi(name, "Entradas.txt") == 0){
+                fprintf(fp, "%.0f \n", M[i][j]);
+            }
+            else fprintf(fp, "%.23f \n", M[i][j]);
         }
     }
     fprintf(fp, "\n");
@@ -152,5 +140,62 @@ bool SaveMatrix(m_type **M, char *name){
     return true;
 }
 
+/*
+** ===================================================================
+**     Method      :    FrobeniusNorm
+**
+**     Description :    Determine Frobenius norm of a matrix
+**     Parameters  :    Matrix
+**     Return      :    Frobenius norm
+** ===================================================================
+*/
+double FrobeniusNorm(m_type **M){
+    double sum = 0, norm = 0;
+    int row, column;
+    row = M[0][0];
+    column = M[0][1];
+    for(int i = 1; i < row; i++){
+        for(int j = 0; j < column; j++){
+            sum += pow(M[i][j], 2);
+            // printf("soma: %f     valor: %f \n", sum, M[i][j]);
+        }
+    }
+    norm = sqrt(sum);
+    return norm;
+}
 
+/*
+** ===================================================================
+**     Method      :    RandomInit
+**
+**     Description :    Initialize a matrix randomly
+**     Parameters  :    Matrix
+**     Return      :    Random initialized matrix
+** ===================================================================
+*/
+m_type **RandomInit(m_type **M){
+    int aux;
+    int row = M[0][0];
+    int column = M[0][1];
+    m_type **Mindex = (m_type **)malloc((row - 1) * sizeof(m_type*));
+
+    for (int i = 0; i < row; i++){
+        Mindex[i] = (m_type *)malloc((column) * sizeof(m_type));
+    }
+
+    Mindex[0][0] = row;
+    Mindex[0][1] = column;
+
+    // Random initialization
+    for (int i = 1; i < row; i++){
+        for (int j = 0; j < column; j++){
+            aux = (rand() % NUM_SIZE);
+            Mindex[i][j] = aux;
+            // printf("%.0f \n", Mindex[i][j]);
+            M[i][j] = log10(pow(M_PI, aux));
+        }
+    }
+    SaveMatrix(Mindex, "Entradas.txt");
+    return M;
+}
 

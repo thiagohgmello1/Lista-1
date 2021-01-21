@@ -70,4 +70,26 @@ void MatrixPrint(m_type **M);
 */
 bool SaveMatrix(m_type **M, char *name);
 
+/*
+** ===================================================================
+**     Method      :    FrobeniusNorm
+**
+**     Description :    Determine Frobenius norm of a matrix
+**     Parameters  :    Matrix
+**     Return      :    Frobenius norm
+** ===================================================================
+*/
+double FrobeniusNorm(m_type **M);
+
+/*
+** ===================================================================
+**     Method      :    RandomInit
+**
+**     Description :    Initialize a matrix randomly
+**     Parameters  :    Matrix
+**     Return      :    Random initialized matrix
+** ===================================================================
+*/
+m_type **RandomInit(m_type **M);
+
 #endif
