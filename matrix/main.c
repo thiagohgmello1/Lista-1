@@ -1,4 +1,4 @@
-#include "matrix/matrix.h"
+#include "matrix.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -38,7 +38,7 @@ int main(void){
         free(M1);
         free(M2);
         free(M);
-        printf("Norma de Frobenius: %.23lf \n", norm);
+        printf("Norma de Frobenius: %.15lf \n", norm);
         printf("FIM\n");
     } else printf("Multiplicacao impossivel. \n");
     return 0;

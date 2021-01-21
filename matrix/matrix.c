@@ -132,7 +132,7 @@ bool SaveMatrix(m_type **M, char *name){
             if(strcmpi(name, "Entradas.txt") == 0){
                 fprintf(fp, "%.0f \n", M[i][j]);
             }
-            else fprintf(fp, "%.23f \n", M[i][j]);
+            else fprintf(fp, "%.15f \n", M[i][j]);
         }
     }
     fprintf(fp, "\n");
