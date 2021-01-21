@@ -10,8 +10,10 @@
 #include <time.h>
 #include <math.h>
 #include "matrix.h"
+#include <string.h>
 
 #define m_type float
+#define NUM_SIZE 37
 
 /*
 ** ===================================================================
@@ -44,24 +46,32 @@ m_type **MatrixInit(int row, int column){
     m_type aux = 0;
     row += 1;
     m_type **M = (float **)malloc(row * sizeof(m_type*));
+    m_type **Mindex = (float **)malloc((row - 1) * sizeof(m_type*));
     
     for (int i = 0; i < row; i++)
     {
         M[i] = (float *)malloc((column) * sizeof(m_type));
+        Mindex[i] = (float *)malloc((column) * sizeof(m_type));
     }
-
+    
     M[0][0] = row;
     M[0][1] = column;
+
+    Mindex[0][0] = row;
+    Mindex[0][1] = column;
 
     // Random initialization
     for (int i = 1; i < row; i++){
         for (int j = 0; j < column; j++){
-            aux = log10(pow(M_PI,rand() % 5));
-            // printf("%f \n", aux);
-            M[i][j] = aux;
+            aux = (m_type)(rand() % NUM_SIZE);
+            Mindex[i][j] = aux;
+            printf("%.0f \n", Mindex[i][j]);
+            M[i][j] = log10(pow(M_PI, aux));
             // M[i][j] = j + 1;
         }
     }
+    SaveMatrix(Mindex, "Entradas.txt");
+    SaveMatrix(M, "Matrizes.txt");
     return M;
 }
 
@@ -115,3 +125,32 @@ void MatrixPrint(m_type **M){
         }
     }
 }
+
+/*
+** ===================================================================
+**     Method      :    SaveMatrix
+**
+**     Description :    Save matrix in a .txt file
+**     Parameters  :    Matrix that will be saved
+**     Return      :    None
+** ===================================================================
+*/
+bool SaveMatrix(m_type **M, char *name){
+    FILE *fp;
+    int row = M[0][0];
+    int column = M[0][1];
+
+    fp = fopen(name, "a");
+    for(int i = 1; i < row; i++){
+        for(int j = 0; j < column; j++){
+            // fprintf(fp, "M[%d][%d] = %f \n", (i - 1), j, M[i][j]);
+            fprintf(fp, "%f \n", M[i][j]);
+        }
+    }
+    fprintf(fp, "\n");
+    fclose(fp);
+    return true;
+}
+
+
+

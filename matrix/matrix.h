@@ -59,4 +59,15 @@ m_type **MatrixMult(m_type **mt1, m_type **mt2);
 */
 void MatrixPrint(m_type **M);
 
+/*
+** ===================================================================
+**     Method      :    SaveMatrix
+**
+**     Description :    Save matrix in a .txt file
+**     Parameters  :    Matrix that will be saved
+**     Return      :    None
+** ===================================================================
+*/
+bool SaveMatrix(m_type **M, char *name);
+
 #endif
