@@ -177,7 +177,7 @@ m_type **RandomInit(m_type **M){
     int aux;
     int row = M[0][0];
     int column = M[0][1];
-    m_type **Mindex = (m_type **)malloc((row - 1) * sizeof(m_type*));
+    m_type **Mindex = (m_type **)malloc((row) * sizeof(m_type*));
 
     for (int i = 0; i < row; i++){
         Mindex[i] = (m_type *)malloc((column) * sizeof(m_type));
@@ -209,16 +209,51 @@ m_type **RandomInit(m_type **M){
 ** ===================================================================
 */
 m_type *LSDiagSup(m_type **A, m_type *b){
+    int row = A[0][0];
+    int column = A[0][1];
+    m_type *x = (m_type *)malloc((row - 1) * sizeof(m_type));
+    m_type sum = 0;
+
+    x[row - 2] = b[row - 2]/A[row - 1][column - 1]; // Solution of element xn
+
+    for (int i = (row - 2); i >= 0; i--){
+        for (int j = i + 1; j < column; j++){
+            sum -= A[i + 1][j] * x[j];
+        }
+        x[i] = (sum + b[i])/A[i + 1][i];
+        sum = 0;
+        // printf("x[%d] = %f \n", i, x[i]);
+    }
+    return x;
+}
+
+/*
+** ===================================================================
+**     Method      :    LSDiagInf
+**
+**     Description :    Solve a inferior diagonal linear system
+**     Parameters  :    Matrix pointer and excitation array pointer
+**     Return      :    array pointer with solutions
+** ===================================================================
+*/
+m_type *LSDiagInf(m_type **A, m_type *b){
     int row, column;
     row = A[0][0];
     column = A[0][1];
+    m_type *x = (m_type *)malloc((row - 1) * sizeof(m_type));
+    m_type sum = 0;
 
-    for (int i = (row - 1); i > 0; i--){
-        for (){
-            
+    x[0] = b[0]/A[1][0]; // Solution of element x1
+    // printf("%f \n", x[0]);
+
+    for (int i = 2; i < row; i++){
+        for (int j = 0; j <= (i - 2); j++){
+            sum -= A[i][j] * x[j];
         }
+        x[i - 1] = (sum + b[i - 1])/A[i][i - 1];
+        sum = 0;
+        // printf("x[%d] = %f \n", i - 1, x[i - 1]);
     }
-
-
+    return x;
 }
 
