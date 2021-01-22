@@ -199,3 +199,26 @@ m_type **RandomInit(m_type **M){
     return M;
 }
 
+/*
+** ===================================================================
+**     Method      :    LSDiagSup
+**
+**     Description :    Solve a superior diagonal linear system
+**     Parameters  :    Matrix pointer
+**     Return      :    array pointer with solutions
+** ===================================================================
+*/
+m_type *LSDiagSup(m_type **A, m_type *b){
+    int row, column;
+    row = A[0][0];
+    column = A[0][1];
+
+    for (int i = (row - 1); i > 0; i--){
+        for (){
+            
+        }
+    }
+
+
+}
+

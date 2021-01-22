@@ -31,7 +31,7 @@ bool EqualStatus(int len1, int len2);
 **
 **     Description :    Matrix initialization
 **     Parameters  :    Matrix size
-**     Return      :    Desired matrix
+**     Return      :    Desired matrix pointer
 ** ===================================================================
 */
 m_type **MatrixInit(int row, int column);
@@ -42,8 +42,8 @@ m_type **MatrixInit(int row, int column);
 **
 **     Description :    Determine the multiplication between two
 **                      matrix
-**     Parameters  :    Two matrix that should be multiplied
-**     Return      :    Matrix product
+**     Parameters  :    Two matrix pointers that should be multiplied
+**     Return      :    Matrix product pointer
 ** ===================================================================
 */
 m_type **MatrixMult(m_type **mt1, m_type **mt2);
@@ -53,7 +53,7 @@ m_type **MatrixMult(m_type **mt1, m_type **mt2);
 **     Method      :    MatrixPrint
 **
 **     Description :    Print matrix into console
-**     Parameters  :    Matrix that should be printed
+**     Parameters  :    Matrix pointer that should be printed
 **     Return      :    None
 ** ===================================================================
 */
@@ -64,8 +64,8 @@ void MatrixPrint(m_type **M);
 **     Method      :    SaveMatrix
 **
 **     Description :    Save matrix in a .txt file
-**     Parameters  :    Matrix that will be saved
-**     Return      :    None
+**     Parameters  :    Matrix pointer that will be saved
+**     Return      :    True if operation was well succeed
 ** ===================================================================
 */
 bool SaveMatrix(m_type **M, char *name);
@@ -75,7 +75,7 @@ bool SaveMatrix(m_type **M, char *name);
 **     Method      :    FrobeniusNorm
 **
 **     Description :    Determine Frobenius norm of a matrix
-**     Parameters  :    Matrix
+**     Parameters  :    Matrix pointer
 **     Return      :    Frobenius norm
 ** ===================================================================
 */
@@ -86,10 +86,32 @@ double FrobeniusNorm(m_type **M);
 **     Method      :    RandomInit
 **
 **     Description :    Initialize a matrix randomly
-**     Parameters  :    Matrix
-**     Return      :    Random initialized matrix
+**     Parameters  :    Matrix pointer
+**     Return      :    Random initialized matrix pointer
 ** ===================================================================
 */
 m_type **RandomInit(m_type **M);
+
+/*
+** ===================================================================
+**     Method      :    LSDiagSup
+**
+**     Description :    Solve a superior diagonal linear system
+**     Parameters  :    Matrix pointer and excitation array pointer
+**     Return      :    array pointer with solutions
+** ===================================================================
+*/
+m_type *LSDiagSup(m_type **A, m_type *b);
+
+/*
+** ===================================================================
+**     Method      :    LSDiagInf
+**
+**     Description :    Solve a inferior diagonal linear system
+**     Parameters  :    Matrix pointer and excitation array pointer
+**     Return      :    array pointer with solutions
+** ===================================================================
+*/
+m_type *LSDiagInf(m_type **A, m_type *b);
 
 #endif
