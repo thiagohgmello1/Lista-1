@@ -114,16 +114,4 @@ m_type *LSDiagSup(m_type **A, m_type *b);
 */
 m_type *LSDiagInf(m_type **A, m_type *b);
 
-/*
-** ===================================================================
-**     Method      :    GaussElim
-**
-**     Description :    Solve LS using Gaussian Elimination with
-**                      pivoting.
-**     Parameters  :    Matrix pointer and excitation array pointer
-**     Return      :    Matrix pointer
-** ===================================================================
-*/
-m_type **GaussElim(m_type **A, m_type *b);
-
 #endif
