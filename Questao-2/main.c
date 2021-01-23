@@ -5,6 +5,7 @@
 #include <time.h>
 #include <string.h>
 
+// TODO Testar com outros sistemas lineares
 int main(void){
 
     m_type **A = MatrixInit(4, 4);
