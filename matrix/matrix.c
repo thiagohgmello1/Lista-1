@@ -272,6 +272,7 @@ m_type **GaussElim(m_type **A){
     int column = A[0][1];
     m_type pivot = 0;
     int pos = 0;
+    m_type m = 0;
     m_type *Aaux = (m_type *)malloc((column) * sizeof(m_type));
 
     m_type **M = (m_type **)malloc((row) * sizeof(m_type*));
@@ -280,20 +281,42 @@ m_type **GaussElim(m_type **A){
         M[i] = (m_type *)malloc((column) * sizeof(m_type));
     }
 
+    // Pivoting process
     for (int j = 0; j < column; j++){
-        for (int i = j + 1; i < row; i++){
-            if (abs(A[i][j]) > pivot){
+        for (int i = 1; i < row; i++){
+            if ((j == 0) && (abs(A[i][j]) > pivot)){
                 pivot = A[i][j];
+                pos = i;
+            }
+            else if ((A[i][j - 1] == 0) && (abs(A[i][j]) > pivot)){
+                pivot = A[i][j];
+                pos = i;
+            }
+        }
+        for (int i = 1; i < row; i++){
+            m = -A[i][j] / pivot;
+            for (int j2 = j; j2 < column; j2++){
+                if ((j == 0) && (i != pos)){
+                    A[i][j2] = A[i][j2] + m * A[pos][j2];
+                }
+                else if ((A[i][j - 1] == 0) && (i != pos)){
+                    A[i][j2] = A[i][j2] + m * A[pos][j2];
+                }
+            }
+        }
+        pivot = 0;
+    }
+
+    // Superior diagonal matrix mountage
+    for (int j = 0; j < column; j++){
+        for (int i = 1; i < row; i++){
+            if (A[i][j] != 0){
                 pos = i;
             }
         }
         Aaux = A[pos];
         A[pos] = A[j + 1];
         A[j + 1] = Aaux;
-        for (int i = 0; i < column; i++){
-            printf("Aaux[%d] = %f \n", i, Aaux[i]);
-        }
-        pivot = 0;
     }
     return A;
 }
