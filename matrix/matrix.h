@@ -119,10 +119,10 @@ m_type *LSDiagInf(m_type **A, m_type *b);
 **     Method      :    GaussElim
 **
 **     Description :    Implement Gauss elimination with pivoting
-**     Parameters  :    Matrix pointer and excitation array pointer
+**     Parameters  :    Matrix pointer
 **     Return      :    Pivoted matrix pointer
 ** ===================================================================
 */
-m_type *GaussElim(m_type **A, m_type *b);
+m_type **GaussElim(m_type **A);
 
 #endif

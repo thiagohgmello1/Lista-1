@@ -36,6 +36,6 @@ int main(void){
     A[4][2] = 55;
     A[4][3] = 12;
 
-    B = GaussElim(A, b);
+    B = GaussElim(A);
     MatrixPrint(B);
 }

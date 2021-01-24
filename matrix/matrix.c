@@ -266,6 +266,34 @@ m_type *LSDiagInf(m_type **A, m_type *b){
 **     Return      :    Pivoted matrix pointer
 ** ===================================================================
 */
-m_type *GaussElim(m_type **A, m_type *b){
-    
+m_type **GaussElim(m_type **A){
+
+    int row = A[0][0];
+    int column = A[0][1];
+    m_type pivot = 0;
+    int pos = 0;
+    m_type *Aaux = (m_type *)malloc((column) * sizeof(m_type));
+
+    m_type **M = (m_type **)malloc((row) * sizeof(m_type*));
+
+    for (int i = 0; i < row; i++){
+        M[i] = (m_type *)malloc((column) * sizeof(m_type));
+    }
+
+    for (int j = 0; j < column; j++){
+        for (int i = j + 1; i < row; i++){
+            if (abs(A[i][j]) > pivot){
+                pivot = A[i][j];
+                pos = i;
+            }
+        }
+        Aaux = A[pos];
+        A[pos] = A[j + 1];
+        A[j + 1] = Aaux;
+        for (int i = 0; i < column; i++){
+            printf("Aaux[%d] = %f \n", i, Aaux[i]);
+        }
+        pivot = 0;
+    }
+    return A;
 }
