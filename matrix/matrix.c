@@ -270,9 +270,11 @@ m_type **GaussElim(m_type **A){
 
     int row = A[0][0];
     int column = A[0][1];
-    m_type pivot = 0;
     int pos = 0;
+    int count = 0;
+    m_type pivot = 0;
     m_type m = 0;
+    m_type det = 1;
     m_type *Aaux = (m_type *)malloc((column) * sizeof(m_type));
 
     m_type **M = (m_type **)malloc((row) * sizeof(m_type*));
@@ -314,9 +316,18 @@ m_type **GaussElim(m_type **A){
                 pos = i;
             }
         }
+        count += 1;
         Aaux = A[pos];
         A[pos] = A[j + 1];
         A[j + 1] = Aaux;
     }
+    printf("%d \n", count);
+
+    for (int i = 1; i < row; i++){
+        det *= A[i][i - 1];
+    }
+    det *= pow(-1, count);
+    printf("det = %f \n", det);
+
     return A;
 }
