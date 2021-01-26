@@ -90,7 +90,7 @@ double FrobeniusNorm(m_type **M);
 **     Return      :    Random initialized matrix pointer
 ** ===================================================================
 */
-m_type **RandomInit(m_type **M);
+m_type **RandomInit(m_type **M, char *name);
 
 /*
 ** ===================================================================

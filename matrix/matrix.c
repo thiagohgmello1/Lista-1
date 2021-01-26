@@ -121,7 +121,7 @@ bool SaveMatrix(m_type **M, char *name){
     int row = M[0][0];
     int column = M[0][1];
 
-    fp = fopen(name, "a");
+    fp = fopen(name, "w");
     if(fp == NULL) {
         return false;
     }
@@ -129,11 +129,12 @@ bool SaveMatrix(m_type **M, char *name){
     fprintf(fp, "row: %d \ncolumn: %d\n", (row - 1), column);
     for(int i = 1; i < row; i++){
         for(int j = 0; j < column; j++){
-            if(strcmpi(name, "Entradas.txt") == 0){
-                fprintf(fp, "%.0f \n", M[i][j]);
+            if(strcmpi(name, "Matrizes.txt") == 0){
+                fprintf(fp, "%.15f ", M[i][j]);
             }
-            else fprintf(fp, "%.15f \n", M[i][j]);
+            else fprintf(fp, "%.0f ", M[i][j]);
         }
+        fprintf(fp, "\n");
     }
     fprintf(fp, "\n");
     fclose(fp);
@@ -173,7 +174,7 @@ double FrobeniusNorm(m_type **M){
 **     Return      :    Random initialized matrix
 ** ===================================================================
 */
-m_type **RandomInit(m_type **M){
+m_type **RandomInit(m_type **M, char *name){
     int aux;
     int row = M[0][0];
     int column = M[0][1];
@@ -195,7 +196,7 @@ m_type **RandomInit(m_type **M){
             M[i][j] = log10(pow(M_PI, aux));
         }
     }
-    SaveMatrix(Mindex, "Entradas.txt");
+    SaveMatrix(Mindex, name);
     return M;
 }
 
