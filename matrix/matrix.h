@@ -10,7 +10,7 @@
 
 #include <stdbool.h>
 
-#define m_type float
+#define m_type double
 
 /*
 ** ===================================================================
@@ -134,6 +134,6 @@ m_type *LSDiagInf(m_type **A, m_type *b);
 **     Return      :    Pivoted matrix pointer
 ** ===================================================================
 */
-m_type **GaussElim(m_type **A);
+void GaussElim(m_type **A, m_type *b);
 
 #endif

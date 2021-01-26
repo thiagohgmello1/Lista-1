@@ -12,7 +12,7 @@
 #include "matrix.h"
 #include <string.h>
 
-#define m_type float
+#define m_type double
 #define NUM_SIZE 37
 
 /*
@@ -212,7 +212,8 @@ m_type **RandomInit(m_type **M, char *name){
             aux = (rand() % NUM_SIZE);
             Mindex[i][j] = aux;
             // printf("%.0f \n", Mindex[i][j]);
-            M[i][j] = log10(pow(M_PI, aux));
+            // M[i][j] = log10(pow(M_PI, aux));
+            M[i][j] = aux;
         }
     }
     SaveMatrix(Mindex, name);
@@ -242,7 +243,7 @@ m_type *LSDiagSup(m_type **A, m_type *b){
         }
         x[i] = (sum + b[i])/A[i + 1][i];
         sum = 0;
-        // printf("x[%d] = %f \n", i, x[i]);
+        printf("x[%d] = %f \n", i, x[i]);
     }
     return x;
 }
@@ -286,8 +287,9 @@ m_type *LSDiagInf(m_type **A, m_type *b){
 **     Return      :    Pivoted matrix pointer
 ** ===================================================================
 */
-m_type **GaussElim(m_type **A){
+void GaussElim(m_type **A, m_type *b){
 
+    float ep = 0.000001;
     int row = A[0][0];
     int column = A[0][1];
     int pos = 0;
@@ -295,6 +297,7 @@ m_type **GaussElim(m_type **A){
     m_type pivot = 0;
     m_type m = 0;
     m_type det = 1;
+    m_type baux = 0;
     m_type *Aaux = (m_type *)malloc((column) * sizeof(m_type));
 
     m_type **M = (m_type **)malloc((row) * sizeof(m_type*));
@@ -305,49 +308,89 @@ m_type **GaussElim(m_type **A){
 
     // Pivoting process
     for (int j = 0; j < column; j++){
+        // Pivot element definition
         for (int i = 1; i < row; i++){
             if ((j == 0) && (abs(A[i][j]) > pivot)){
                 pivot = A[i][j];
                 pos = i;
             }
-            else if ((A[i][j - 1] == 0) && (abs(A[i][j]) > pivot)){
+            else if ((abs(A[i][j - 1]) <= ep) && (abs(A[i][j]) > pivot)){
                 pivot = A[i][j];
                 pos = i;
             }
         }
+        // Pivonting process
         for (int i = 1; i < row; i++){
             m = -A[i][j] / pivot;
             for (int j2 = j; j2 < column; j2++){
                 if ((j == 0) && (i != pos)){
-                    A[i][j2] = A[i][j2] + m * A[pos][j2];
+                    A[i][j2] += m * A[pos][j2];
                 }
-                else if ((A[i][j - 1] == 0) && (i != pos)){
-                    A[i][j2] = A[i][j2] + m * A[pos][j2];
+                else if ((abs(A[i][j - 1]) <= ep) && (i != pos)){
+                    A[i][j2] += m * A[pos][j2];
                 }
+            }
+            if (i != pos){
+                b[i - 1] += m * b[pos - 1];
             }
         }
         pivot = 0;
     }
 
+    FILE *fp;
+    fp = fopen("b1.txt", "w");
+    fprintf(fp, "size: %d \n", column);
+    for(int i = 0; i < column; i++){
+            fprintf(fp, "%.15f ", b[i]);
+    }
+
+    SaveMatrix(A,"A1.txt");
     // Superior diagonal matrix mountage
     for (int j = 0; j < column; j++){
         for (int i = 1; i < row; i++){
-            if (A[i][j] != 0){
-                pos = i;
+            if ((abs(A[i][j]) > ep) && (i != (j + 1))){
+                if (j == 0){
+                    pos = i;
+                    count += 1;
+                    
+                    baux = b[pos - 1];
+                    b[pos - 1] = b[j];
+                    b[j] = baux;
+                    
+                    Aaux = A[pos];
+                    A[pos] = A[j + 1];
+                    A[j + 1] = Aaux;
+                    break;
+                }
+                else if (abs(A[i][j - 1]) < ep){
+                    pos = i;
+                    count += 1;
+                    
+                    baux = b[pos - 1];
+                    b[pos - 1] = b[j];
+                    b[j] = baux;
+                    
+                    Aaux = A[pos];
+                    A[pos] = A[j + 1];
+                    A[j + 1] = Aaux;
+                    break;
+                }
+                
             }
         }
-        count += 1;
-        Aaux = A[pos];
-        A[pos] = A[j + 1];
-        A[j + 1] = Aaux;
+        
     }
-    printf("%d \n", count);
+    SaveMatrix(A,"A2.txt");
+    // printf("%d \n", count);
 
     for (int i = 1; i < row; i++){
         det *= A[i][i - 1];
+        printf("b[%d] = %f\n", i - 1, b[i - 1]);
     }
     det *= pow(-1, count);
     printf("det = %f \n", det);
 
-    return A;
+    free(Aaux);
+    free(M);
+    // return A;
 }
