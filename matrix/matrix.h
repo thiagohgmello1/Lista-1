@@ -83,6 +83,17 @@ double FrobeniusNorm(m_type **M);
 
 /*
 ** ===================================================================
+**     Method      :    EuclidianNorm
+**
+**     Description :    Determine Euclidian norm of a array
+**     Parameters  :    Array pointer
+**     Return      :    Euclidian norm
+** ===================================================================
+*/
+double EuclidianNorm(m_type *array, int size);
+
+/*
+** ===================================================================
 **     Method      :    RandomInit
 **
 **     Description :    Initialize a matrix randomly

@@ -44,11 +44,11 @@ bool EqualStatus(int len1, int len2){
 */
 m_type **MatrixInit(int row, int column){
     row += 1;
-    m_type **M = (m_type **)malloc(row * sizeof(m_type*));
+    m_type **M = (m_type **)calloc(row, sizeof(m_type*));
     
     
     for (int i = 0; i < row; i++){
-        M[i] = (m_type *)malloc((column) * sizeof(m_type));
+        M[i] = (m_type *)calloc((column), sizeof(m_type));
     }
     
     M[0][0] = row;
@@ -132,7 +132,7 @@ bool SaveMatrix(m_type **M, char *name){
             if(strcmpi(name, "Matrizes.txt") == 0){
                 fprintf(fp, "%.15f ", M[i][j]);
             }
-            else fprintf(fp, "%.0f ", M[i][j]);
+            else fprintf(fp, "%.15f ", M[i][j]);
         }
         fprintf(fp, "\n");
     }
@@ -160,6 +160,25 @@ double FrobeniusNorm(m_type **M){
             sum += pow(M[i][j], 2);
             // printf("soma: %f     valor: %f \n", sum, M[i][j]);
         }
+    }
+    norm = sqrt(sum);
+    return norm;
+}
+
+/*
+** ===================================================================
+**     Method      :    EuclidianNorm
+**
+**     Description :    Determine Euclidian norm of a array
+**     Parameters  :    Array pointer
+**     Return      :    Euclidian norm
+** ===================================================================
+*/
+double EuclidianNorm(m_type *array, int size){
+    double sum = 0, norm = 0;
+
+    for (int i = 0; i < size; i++){
+        sum += pow(array[i], 2);
     }
     norm = sqrt(sum);
     return norm;

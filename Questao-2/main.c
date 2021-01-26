@@ -4,78 +4,91 @@
 #include <stdbool.h>
 #include <time.h>
 #include <string.h>
+#include <math.h>
+
+#define NUM_SIZE 37
+#define printArray 0
 
 int main(void){
 
-    m_type **A = MatrixInit(4, 4);
-    m_type **B = MatrixInit(4, 4);
-    m_type *b = (m_type *)malloc((4) * sizeof(m_type));
-    m_type *c = (m_type *)malloc((4) * sizeof(m_type));
-    m_type *x = (m_type *)malloc((4) * sizeof(m_type));
-    m_type *x2 = (m_type *)malloc((4) * sizeof(m_type));
-    
-    b[0] = 1;
-    b[1] = -2;
-    b[2] = 28;
-    b[3] = 8;
+    srand(time(NULL));
+    FILE *fp1, *fp2;
+    int size = 0, aux = 0;
 
-    c[0] = 4;
-    c[1] = 1;
-    c[2] = 48;
-    c[3] = 6;
+    printf("Digite o tamanho dos sistemas lineares (Ax = b): ");
+    scanf("%d", &size);
 
-    A[1][0] = 5;
-    A[1][1] = -2;
-    A[1][2] = 6;
-    A[1][3] = 1;
+    m_type **A1 = MatrixInit(size, size);
+    m_type **B1 = MatrixInit(size, size);
+    m_type *b1 = (m_type *)malloc((size) * sizeof(m_type));
+    m_type *x1 = (m_type *)malloc((size) * sizeof(m_type));
 
-    A[2][0] = 0;
-    A[2][1] = 3;
-    A[2][2] = 7;
-    A[2][3] = -4;
+    m_type **A2 = MatrixInit(size, size);
+    m_type **B2 = MatrixInit(size, size);
+    m_type *b2 = (m_type *)malloc((size) * sizeof(m_type));
+    m_type *x2 = (m_type *)malloc((size) * sizeof(m_type));
 
-    A[3][0] = 0;
-    A[3][1] = 0;
-    A[3][2] = 4;
-    A[3][3] = 5;
+    for (int i = 0; i < size; i++){
+        aux = (rand() % NUM_SIZE);
+        b1[i] = aux;
 
-    A[4][0] = 0;
-    A[4][1] = 0;
-    A[4][2] = 0;
-    A[4][3] = 2;
-
-    B[1][0] = 2;
-    B[1][1] = 0;
-    B[1][2] = 0;
-    B[1][3] = 0;
-
-    B[2][0] = 3;
-    B[2][1] = 5;
-    B[2][2] = 0;
-    B[2][3] = 0;
-
-    B[3][0] = 1;
-    B[3][1] = -6;
-    B[3][2] = 8;
-    B[3][3] = 0;
-
-    B[4][0] = -1;
-    B[4][1] = 4;
-    B[4][2] = -3;
-    B[4][3] = 9;
-
-    x = LSDiagSup(A, b);
-    for (int i = 0; i < 4; i++) printf("x[%d] = %f \n", i, x[i]);
-
-    x2 = LSDiagInf(B, c);
-    for (int j = 0; j < 4; j++) {
-        printf("x[%d] = %f \n", j, x2[j]);
+        aux = (rand() % NUM_SIZE);
+        b2[i] = aux;
     }
 
-    free(A);
-    free(B);
-    free(x);
+    for (int i = 1; i < size + 1; i++){
+        for (int j = i - 1; j <= size; j++){
+            aux = (rand() % NUM_SIZE);
+            B1[i][j] = aux;
+            A1[i][j] = log10(pow(M_PI, aux));
+        }
+    }
+    
+    for (int i = 1; i < size + 1; i++){
+        for (int j = 0; j <= i - 1; j++){
+            aux = (rand() % NUM_SIZE);
+            B2[i][j] = aux;
+            A2[i][j] = log10(pow(M_PI, aux));
+            // A2[i][j] = aux;
+        }
+    }
+
+    SaveMatrix(A1, "superior.txt");
+    SaveMatrix(A2, "inferior.txt");
+
+    x1 = LSDiagSup(A1, b1);
+    x2 = LSDiagInf(A2, b2);
+
+    if (printArray){
+        for (int i = 0; i < size; i++) {
+            printf("x1[%d] = %f \n", i, x1[i]);
+        }
+    }
+
+    printf("Norma euclidiana do SL superior: %.16lf \n", EuclidianNorm(x1, size));
+    printf("Norma euclidiana do SL inferior: %.16lf \n", EuclidianNorm(x2, size));
+
+    fp1 = fopen("b1.txt", "w");
+    fp2 = fopen("b2.txt", "w");
+
+    fprintf(fp1, "size: %d \n", size);
+    fprintf(fp2, "size: %d \n", size);
+    for(int i = 0; i < size; i++){
+            fprintf(fp1, "%.15f ", b1[i]);
+            fprintf(fp2, "%.15f ", b2[i]);
+    }
+
+    fclose(fp1);
+    fclose(fp2);
+
+    free(A1);
+    free(A2);
+    free(B1);
+    free(B2);
+    free(x1);
     free(x2);
-    free(b);
-    free(c);
+    free(b1);
+    free(b2);
+
+    return 0;
 }
