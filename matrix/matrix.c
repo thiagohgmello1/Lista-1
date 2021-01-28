@@ -159,7 +159,6 @@ double FrobeniusNorm(m_type **M){
     for(int i = 1; i < row; i++){
         for(int j = 0; j < column; j++){
             sum += pow(M[i][j], 2);
-            // printf("soma: %f     valor: %f \n", sum, M[i][j]);
         }
     }
     norm = sqrt(sum);
@@ -212,8 +211,8 @@ m_type **RandomInit(m_type **M, char *name){
         for (int j = 0; j < column; j++){
             aux = (rand() % NUM_SIZE);
             Mindex[i][j] = aux;
-            // M[i][j] = log10(pow(M_PI, aux));
-            M[i][j] = aux;
+            M[i][j] = log10(pow(M_PI, aux));
+            // M[i][j] = aux;
         }
     }
     SaveMatrix(Mindex, name);

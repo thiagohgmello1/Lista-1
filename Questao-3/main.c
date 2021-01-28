@@ -90,7 +90,9 @@ int main(void){
     }
 
     fclose(fp);
-    free(A);
+    DeallocM(A);
+    x = NULL;
+    b = NULL;
     free(x);
     free(b);
 }

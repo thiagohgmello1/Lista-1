@@ -49,7 +49,6 @@ int main(void){
             aux = (rand() % NUM_SIZE);
             B2[i][j] = aux;
             A2[i][j] = log10(pow(M_PI, aux));
-            // A2[i][j] = aux;
         }
     }
 
@@ -81,10 +80,14 @@ int main(void){
     fclose(fp1);
     fclose(fp2);
 
-    free(A1);
-    free(A2);
-    free(B1);
-    free(B2);
+    DeallocM(A1);
+    DeallocM(A2);
+    DeallocM(B1);
+    DeallocM(B2);
+    x1 = NULL;
+    x2 = NULL;
+    b1 = NULL;
+    b2 = NULL;
     free(x1);
     free(x2);
     free(b1);
