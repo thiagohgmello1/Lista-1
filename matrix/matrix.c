@@ -14,6 +14,7 @@
 
 #define m_type double
 #define NUM_SIZE 37
+#define dec 5
 
 /*
 ** ===================================================================
@@ -211,7 +212,6 @@ m_type **RandomInit(m_type **M, char *name){
         for (int j = 0; j < column; j++){
             aux = (rand() % NUM_SIZE);
             Mindex[i][j] = aux;
-            // printf("%.0f \n", Mindex[i][j]);
             // M[i][j] = log10(pow(M_PI, aux));
             M[i][j] = aux;
         }
@@ -233,7 +233,7 @@ m_type *LSDiagSup(m_type **A, m_type *b){
     int row = A[0][0];
     int column = A[0][1];
     m_type *x = (m_type *)malloc((row - 1) * sizeof(m_type));
-    m_type sum = 0;
+    double sum = 0;
 
     x[row - 2] = b[row - 2]/A[row - 1][column - 1]; // Solution of element xn
 
@@ -243,7 +243,7 @@ m_type *LSDiagSup(m_type **A, m_type *b){
         }
         x[i] = (sum + b[i])/A[i + 1][i];
         sum = 0;
-        printf("x[%d] = %f \n", i, x[i]);
+        // printf("x[%d] = %f \n", i, x[i]);
     }
     return x;
 }
@@ -265,7 +265,6 @@ m_type *LSDiagInf(m_type **A, m_type *b){
     m_type sum = 0;
 
     x[0] = b[0]/A[1][0]; // Solution of element x1
-    // printf("%f \n", x[0]);
 
     for (int i = 2; i < row; i++){
         for (int j = 0; j <= (i - 2); j++){
@@ -273,7 +272,6 @@ m_type *LSDiagInf(m_type **A, m_type *b){
         }
         x[i - 1] = (sum + b[i - 1])/A[i][i - 1];
         sum = 0;
-        // printf("x[%d] = %f \n", i - 1, x[i - 1]);
     }
     return x;
 }
@@ -319,9 +317,17 @@ void GaussElim(m_type **A, m_type *b){
                 pos = i;
             }
         }
-        // Pivonting process
+        // Pivoting process
         for (int i = 1; i < row; i++){
             m = -A[i][j] / pivot;
+            if ((j == 0) && (i != pos)){
+                // b[i - 1] += round((m * b[pos - 1])*pow(10,dec))/pow(10,dec);
+                b[i - 1] += m * b[pos - 1];
+            }
+            else if ((abs(A[i][j - 1]) <= ep) && (i != pos)){
+                // b[i - 1] += round((m * b[pos - 1])*pow(10,dec))/pow(10,dec);
+                b[i - 1] += m * b[pos - 1];
+            }
             for (int j2 = j; j2 < column; j2++){
                 if ((j == 0) && (i != pos)){
                     A[i][j2] += m * A[pos][j2];
@@ -329,9 +335,6 @@ void GaussElim(m_type **A, m_type *b){
                 else if ((abs(A[i][j - 1]) <= ep) && (i != pos)){
                     A[i][j2] += m * A[pos][j2];
                 }
-            }
-            if (i != pos){
-                b[i - 1] += m * b[pos - 1];
             }
         }
         pivot = 0;
@@ -381,16 +384,33 @@ void GaussElim(m_type **A, m_type *b){
         
     }
     SaveMatrix(A,"A2.txt");
-    // printf("%d \n", count);
-
+    
     for (int i = 1; i < row; i++){
         det *= A[i][i - 1];
-        printf("b[%d] = %f\n", i - 1, b[i - 1]);
     }
     det *= pow(-1, count);
     printf("det = %f \n", det);
 
+    Aaux = NULL;
     free(Aaux);
-    free(M);
-    // return A;
+    DeallocM(M);
+}
+
+/*
+** ===================================================================
+**     Method      :    DeallocM
+**
+**     Description :    Dealloc a matrix pointer
+**     Parameters  :    Matrix pointer
+**     Return      :    None
+** ===================================================================
+*/
+void DeallocM(m_type **A){
+    int row = A[0][0];
+    for (int i = 0; i < row; i++){
+        A[i] = NULL;
+        free(A[i]);
+    }
+    A = NULL;
+    free(A);
 }

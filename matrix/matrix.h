@@ -136,4 +136,15 @@ m_type *LSDiagInf(m_type **A, m_type *b);
 */
 void GaussElim(m_type **A, m_type *b);
 
+/*
+** ===================================================================
+**     Method      :    DeallocM
+**
+**     Description :    Dealloc a matrix pointer
+**     Parameters  :    Matrix pointer
+**     Return      :    None
+** ===================================================================
+*/
+void DeallocM(m_type **A);
+
 #endif

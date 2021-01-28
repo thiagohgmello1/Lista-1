@@ -6,8 +6,8 @@
 #include <string.h>
 
 #define NUM_SIZE 37
-#define printArray 0
-#define rand_init false
+#define printArray true
+#define rand_init true
 
 int main(void){
 
@@ -75,14 +75,13 @@ int main(void){
     }
 
     GaussElim(A, b);
+    x = LSDiagSup(A, b);
 
     fp2 = fopen("b2.txt", "w");
     fprintf(fp2, "size: %d \n", size);
     for(int i = 0; i < size; i++){
             fprintf(fp2, "%.15f ", b[i]);
     }
-    // MatrixPrint(A);
-    x = LSDiagSup(A, b);
 
     if (printArray){
         for (int i = 0; i < size; i++) {
