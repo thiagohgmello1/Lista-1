@@ -7,7 +7,7 @@
 #include <math.h>
 
 #define NUM_SIZE 37
-#define printArray 0
+#define printArray false
 
 int main(void){
 

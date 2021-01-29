@@ -18,7 +18,7 @@
 
 /*
 ** ===================================================================
-**     Method      :    bool EqualStatus(int len1, int len2)
+**     Method      :    EqualStatus
 **
 **     Description :    Determine if two matrix can be multiplied
 **     Parameters  :    Number of columns from the first matrix and

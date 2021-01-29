@@ -20,12 +20,12 @@ int main(void){
     m_type *x;
 
     if (rand_init){
-        printf("Digite o tamanho dos sistemas lineares (Ax = b): ");
+        printf("Digite o tamanho do sistema lineare (Ax = b): ");
         scanf("%d", &size);
 
-        A = MatrixInit(4, 4);
-        b = (m_type *)malloc((4) * sizeof(m_type));
-        x = (m_type *)malloc((4) * sizeof(m_type));
+        A = MatrixInit(size, size);
+        b = (m_type *)malloc((size) * sizeof(m_type));
+        x = (m_type *)malloc((size) * sizeof(m_type));
 
         for (int i = 0; i < size; i++){
             aux = (rand() % NUM_SIZE);
@@ -88,6 +88,8 @@ int main(void){
             printf("x[%d] = %f \n", i, x[i]);
         }
     }
+    
+    printf("Norma Euclidiana: %.15f", EuclidianNorm(x, size));
 
     fclose(fp);
     DeallocM(A);

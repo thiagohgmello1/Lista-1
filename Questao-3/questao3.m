@@ -32,7 +32,7 @@ for i=1:column
 end
 
 A = fscanf(fpA, formatSpec, sizeM);
-A = A';
+A = log10(pi.^A');
 A1 = fscanf(fpA1, formatSpec, sizeM);
 A1 = A1';
 A2 = fscanf(fpA2, formatSpec, sizeM);
